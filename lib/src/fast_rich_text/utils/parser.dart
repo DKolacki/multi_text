@@ -1,5 +1,3 @@
-
-
 import '../models/parsed_node.dart';
 
 import '../models/special_symbol.dart';
@@ -13,7 +11,12 @@ class Parser {
   List<String> symbols;
 
   final StringToNodeParser _stringToNodeParser;
-  bool _isRegisteredSymbol(String i) => symbols.contains(i);
+
+  bool _isRegisteredSymbol(String text, int index) {
+    bool escaped = (index > 0) && (text[index - 1] == '\\');
+    return !escaped && symbols.contains(text[index]);
+  }
+
   Parser({
     required this.text,
     required this.symbols,
@@ -56,9 +59,8 @@ class Parser {
   void _generateIndexes() {
     // Clear to avoid duplicate indexes
     _symbolIndexes.clear();
-
     for (int i = 0; i < text.length; i++) {
-      if (_isRegisteredSymbol(text[i])) {
+      if (_isRegisteredSymbol(text, i)) {
         // symbol already registered
         if (_symbolIndexes.containsKey(text[i])) {
           _symbolIndexes[text[i]]!.add(i);
