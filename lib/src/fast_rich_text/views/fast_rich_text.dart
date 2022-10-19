@@ -123,10 +123,7 @@ class FastRichText extends StatelessWidget {
 
     _allSymbols.clear();
     _allSymbols.addAll(customSymbols);
-    if (!useCustomParseSymbolsOnly) {
-      _addDefaultSymbols();
-    }
-
+ 
     _addNormalTextStyle();
 
     final distinctSymbols = <SymbolParams>[];
@@ -140,6 +137,7 @@ class FastRichText extends StatelessWidget {
     }
     final textSpan = NodeToTextConverter(
       symbols: distinctSymbols,
+      defaultTextStyle: textStyle,
       text: text,
     ).convert();
 
@@ -175,50 +173,11 @@ class FastRichText extends StatelessWidget {
     );
   }
 
-  void _addDefaultSymbols() {
-    final list = <SymbolParams>[];
-
-    // add bold default
-    list.add(
-      SymbolParams(
-        symbolCharacter: '*',
-        style: boldSTextStyle ??
-            textStyle.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-    );
-
-    // add italic default
-    list.add(
-      SymbolParams(
-        symbolCharacter: '_',
-        style: italicTextStyle ??
-            textStyle.copyWith(
-              fontStyle: FontStyle.italic,
-            ),
-      ),
-    );
-
-    // add strikethrough
-    list.add(
-      SymbolParams(
-        symbolCharacter: '~',
-        style: strikethroughTextStyle ??
-            textStyle.copyWith(
-              decoration: TextDecoration.lineThrough,
-            ),
-      ),
-    );
-
-    _allSymbols.addAll(list);
-  }
-
   void _addNormalTextStyle() {
     _allSymbols.add(
       SymbolParams(
         symbolCharacter: '',
-        style: textStyle,
+        style: (s) => s,
       ),
     );
   }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class SymbolParams extends Equatable {
   final String symbolCharacter;
-  final TextStyle? style;
-  final InlineSpan Function(String text)? builder; 
+  final TextStyle Function(TextStyle source)? style;
+  final InlineSpan Function(String text, TextStyle style)? builder; 
 
   const SymbolParams({
     required this.symbolCharacter,

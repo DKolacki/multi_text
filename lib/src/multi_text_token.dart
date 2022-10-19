@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:multi_text/src/fast_rich_text/models/symbol_params.dart';
 
-class MultiTextToken extends SymbolParams{
+class MultiTextToken extends SymbolParams {
   const MultiTextToken({
     required String symbol,
-    TextStyle? textStyle,
-    InlineSpan Function(String str)? builder,
+    TextStyle Function(TextStyle source)? styleBuilder,
+    InlineSpan Function(String text, TextStyle style)? spanBuilder,
   }) : super(
-    symbolCharacter: symbol, 
-    style: textStyle, 
-    builder: builder,
-  );
-
+          symbolCharacter: symbol,
+          style: styleBuilder,
+          builder: spanBuilder,
+        );
 }
-

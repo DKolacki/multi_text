@@ -11,12 +11,16 @@ class NodeToTextConverter {
   /// the original text
   final String text;
 
+  /// default text style
+  final TextStyle defaultTextStyle;
+
   final Parser _parser;
 
   final List<String> _symbolChars;
 
   NodeToTextConverter({
     required this.symbols,
+    required this.defaultTextStyle,
     required this.text,
   })  : _symbolChars = symbols.map((e) => e.symbolCharacter).toList(),
         _parser = Parser(
@@ -38,11 +42,12 @@ class NodeToTextConverter {
       final symbolParams = _getSymbolParamsOf(node.symbol);
 
       if (symbolParams?.builder != null) {
-        return symbolParams!.builder!(string);
+        return symbolParams!.builder!(string, defaultTextStyle);
       } else {
         return TextSpan(
           text: string,
-          style: symbolParams?.style,
+          style:
+              symbolParams?.style?.call(defaultTextStyle) ?? defaultTextStyle,
         );
       }
     } else {
@@ -54,8 +59,10 @@ class NodeToTextConverter {
           nodeChildren: node.children,
         ),
         style: symbols
-            .firstWhere((element) => element.symbolCharacter == node.symbol)
-            .style,
+                .firstWhere((element) => element.symbolCharacter == node.symbol)
+                .style
+                ?.call(defaultTextStyle) ??
+            defaultTextStyle,
       );
     }
   }
@@ -82,7 +89,8 @@ class NodeToTextConverter {
     children.add(
       TextSpan(
         text: string,
-        style: _defaultSymbol?.style,
+        style:
+            _defaultSymbol?.style?.call(defaultTextStyle),
       ),
     );
 
@@ -97,7 +105,7 @@ class NodeToTextConverter {
         children.add(
           TextSpan(
             text: string,
-            style: _defaultSymbol?.style,
+            style: _defaultSymbol?.style?.call(defaultTextStyle),
           ),
         );
 
@@ -112,7 +120,7 @@ class NodeToTextConverter {
     children.add(
       TextSpan(
         text: string,
-        style: _defaultSymbol?.style,
+        style: _defaultSymbol?.style?.call(defaultTextStyle),
       ),
     );
     // }
