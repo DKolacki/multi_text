@@ -18,7 +18,7 @@ class NodeToTextConverter {
 
   final List<String> _symbolChars;
 
-  final RegExp _escapedCharExp = RegExp("\\\\(.)");
+  final RegExp _escapedCharExp = RegExp("\\\\\\\\(.)");
 
   NodeToTextConverter({
     required this.symbols,
@@ -75,7 +75,7 @@ class NodeToTextConverter {
     for (var symbolChar in _symbolChars) {
       //clear symbols, ignore escaped
       string = string.replaceAllMapped(symbolChar, (match) {
-        if (match.start == 0 || (string[match.start - 1] != '\\')) {
+        if (match.start == 0 || (string[match.start - 1] != '\\\\')) {
           return "";
         } else {
           return match.group(0).toString();

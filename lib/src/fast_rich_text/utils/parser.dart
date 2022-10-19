@@ -13,7 +13,7 @@ class Parser {
   final StringToNodeParser _stringToNodeParser;
 
   bool _isRegisteredSymbol(String text, int index) {
-    bool escaped = (index > 0) && (text[index - 1] == '\\');
+    bool escaped = (index > 1) && (text.substring(index-2, index) == '\\\\');
     return !escaped && symbols.contains(text[index]);
   }
 
